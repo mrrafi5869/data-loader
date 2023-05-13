@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
-
+import axios from "axios";
+import "./App.css";
+import { useState } from "react";
+import { TbReload } from "react-icons/tb";
 function App() {
+  const [data, setData] = useState({});
+  console.log(data);
+
+  const loadData = () => {
+    axios
+      .get("https://catfact.ninja/fact")
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((err) => console.log(err.message));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>Fact: {data.fact}</p>
+      <p>Length: {data.length}</p>
+      <TbReload className="reload" onClick={loadData}></TbReload>
     </div>
   );
 }
